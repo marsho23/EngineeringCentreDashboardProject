@@ -1,0 +1,40 @@
+﻿@model EngineeringCentreDashboardWebApp.Models.WeatherResponse
+
+@{
+    ViewData["Title"] = "Weather Forecast";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+
+    <div>
+        <h2>Main Weather Information</h2>
+        <p>Temperature: @Model.List[0].Main.Temp</p>
+        <p>Feels Like: @Model.List[0].Main.Feels_like</p>
+        <p>Minimum Temperature: @Model.List[0].Main.Temp_min</p>
+        <p>Maximum Temperature: @Model.List[0].Main.Temp_max</p>
+        <p>Pressure: @Model.List[0].Main.Pressure</p>
+        <p>Humidity: @Model.List[0].Main.Humidity</p>
+
+        <h2>Additional Weather Information</h2>
+        @foreach (var weather in Model.List[0].Weather)
+        {
+            <p>Id: @weather.Id</p>
+            <p>Main: @weather.Main</p>
+            <p>Description: @weather.Description</p>
+            <p>Icon: @weather.Icon</p>
+        }
+
+        <h2>Clouds Information</h2>
+        <p>All: @Model.List[0].Clouds.All</p>
+
+        <h2>Wind Information</h2>
+        <p>Speed: @Model.List[0].Wind.Speed</p>
+        <p>Deg: @Model.List[0].Wind.Deg</p>
+
+        <h2>Date and Time Information</h2>
+        <p>Unix Timestamp: @Model.List[0].Dt</p>
+        <p>Normal DateTime (UTC): @Model.List[0].NormalDateTimeUtc</p>
+        <p>Normal DateTime (Local): @Model.List[0].NormalDateTimeLocal</p>
+    </div>
+</div>
