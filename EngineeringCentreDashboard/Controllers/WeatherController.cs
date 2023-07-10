@@ -11,8 +11,6 @@ namespace EngineeringCentreDashboard.Controllers
     public class WeatherController : ControllerBase
     {
 
-        private readonly IToDoHelper _toDoHelper;
-
         //private WeatherHelper _weatherHelper;
         private readonly WeatherHelper _weatherHelper;
 
