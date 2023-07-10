@@ -1,4 +1,6 @@
 ﻿using EngineeringCentreDashboard.Business;
+using EngineeringCentreDashboard.Interfaces;
+using EngineeringCentreDashboard.Models;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 
@@ -8,6 +10,9 @@ namespace EngineeringCentreDashboard.Controllers
     [Route("api/[controller]")]
     public class WeatherController : ControllerBase
     {
+
+        private readonly IToDoHelper _toDoHelper;
+
         //private WeatherHelper _weatherHelper;
         private readonly WeatherHelper _weatherHelper;
 
@@ -27,5 +32,14 @@ namespace EngineeringCentreDashboard.Controllers
             var weather = _weatherHelper.GetForecastForToday(city);
             return Ok(weather);
         }
+
+        //[HttpGet]
+        //public List<Forecast> Get()
+        //{
+        //    string city = "Manchester";
+        //    var weather = _weatherHelper.GetForecastForToday(city);
+        //    return weather;
+        //}
+
     }
 }

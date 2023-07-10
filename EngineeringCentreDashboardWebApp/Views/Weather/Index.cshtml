@@ -4,37 +4,52 @@
     ViewData["Title"] = "Weather Forecast";
 }
 
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
 
-    <div>
-        <h2>Main Weather Information</h2>
-        <p>Temperature: @Model.List[0].Main.Temp</p>
-        <p>Feels Like: @Model.List[0].Main.Feels_like</p>
-        <p>Minimum Temperature: @Model.List[0].Main.Temp_min</p>
-        <p>Maximum Temperature: @Model.List[0].Main.Temp_max</p>
-        <p>Pressure: @Model.List[0].Main.Pressure</p>
-        <p>Humidity: @Model.List[0].Main.Humidity</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4">Today's Weather</h1>
+            @*<p class="lead">@Model.City.Name, @Model.City.Country</p>*@
+            @if (Model.City != null)
+            {
+                <p class="lead">@Model.City.Name, @Model.City.Country</p>
+            }
 
-        <h2>Additional Weather Information</h2>
-        @foreach (var weather in Model.List[0].Weather)
-        {
-            <p>Id: @weather.Id</p>
-            <p>Main: @weather.Main</p>
-            <p>Description: @weather.Description</p>
-            <p>Icon: @weather.Icon</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Main Weather Information</h5>
+                    <p class="card-text">Temperature: @Model.List[0].Main.Temp &#8451;</p>
+                    <p class="card-text">Feels Like: @Model.List[0].Main.Feels_like &#8451;</p>
+                    <p class="card-text">Pressure: @Model.List[0].Main.Pressure hPa</p>
+                    <p class="card-text">Humidity: @Model.List[0].Main.Humidity %</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Additional Weather Information</h5>
+                    @foreach (var weather in Model.List[0].Weather)
+                    {
+                        <p class="card-text">Description: @weather.Description</p>
+                        <p class="card-text">Icon: <img src="http://openweathermap.org/img/wn/@(weather.Icon)" alt="Weather Icon" /></p>
+                    }
+                    <p class="card-text">Clouds: @Model.List[0].Clouds.All %</p>
+                    <p class="card-text">Wind Speed: @Model.List[0].Wind.Speed m/s</p>
+                    <p class="card-text">Wind Direction: @Model.List[0].Wind.Deg &deg;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>To-Do List</h2>
+    <div id="todoListContainer">
+        @{
+            Html.RenderPartial("_ToDoListPartial", Model.List);
         }
-
-        <h2>Clouds Information</h2>
-        <p>All: @Model.List[0].Clouds.All</p>
-
-        <h2>Wind Information</h2>
-        <p>Speed: @Model.List[0].Wind.Speed</p>
-        <p>Deg: @Model.List[0].Wind.Deg</p>
-
-        <h2>Date and Time Information</h2>
-        <p>Unix Timestamp: @Model.List[0].Dt</p>
-        <p>Normal DateTime (UTC): @Model.List[0].NormalDateTimeUtc</p>
-        <p>Normal DateTime (Local): @Model.List[0].NormalDateTimeLocal</p>
     </div>
 </div>
