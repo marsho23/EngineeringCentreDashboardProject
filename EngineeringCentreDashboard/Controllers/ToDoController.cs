@@ -1,6 +1,7 @@
 ﻿using EngineeringCentreDashboard.Filters;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System.Net;
@@ -9,6 +10,7 @@ namespace EngineeringCentreDashboard.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
     public class ToDoController : ControllerBase
     {
         private readonly IToDoHelper _helper;
@@ -41,6 +43,8 @@ namespace EngineeringCentreDashboard.Controllers
 
         [HttpGet]
         [Route("getall")]
+        [EnableCors("MyPolicy")]
+
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<ToDo> toDoList = await _helper.GetAll();
