@@ -1,6 +1,8 @@
-﻿using EngineeringCentreDashboard.Filters;
+﻿using EngineeringCentreDashboard.Business;
+using EngineeringCentreDashboard.Filters;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
+using EngineeringCentreDashboard.Models.Request;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
@@ -14,16 +16,24 @@ namespace EngineeringCentreDashboard.Controllers
     public class ToDoController : ControllerBase
     {
         private readonly IToDoHelper _helper;
+        //private readonly UserLoginHelper _userLoginHelper;
+
         public ToDoController(IToDoHelper helper)
         {
             _helper = helper;
+            //_userLoginHelper = new UserLoginHelper();
         }
 
         [HttpPost]
         [ValidateModelState]
         [Route("add")]
-        public IActionResult Add([FromBody] ToDo toDo)
+        public IActionResult Add([FromBody] ToDoRequest toDo)
         {
+            //int userLoginId =(int) toDo.UserLoginId; 
+            //UserLogin userLogin = _userLoginHelper.GetUserLoginById(userLoginId); 
+
+            //toDo.UserLogin = userLogin;
+
             _helper.Add(toDo);
             return Ok(toDo);
         }
@@ -32,7 +42,7 @@ namespace EngineeringCentreDashboard.Controllers
         [Route("get")]
         public async Task<IActionResult> Get(int id)
         {
-            ToDo toDo = await _helper.Get(id);
+            ToDoRequest toDo = await _helper.Get(id);
             if (toDo == null)
             {
                 return NotFound();
@@ -43,25 +53,25 @@ namespace EngineeringCentreDashboard.Controllers
 
         [HttpGet]
         [Route("getall")]
-        [EnableCors("MyPolicy")]
+        [EnableCors("AllowAllOrigins")]
 
         public async Task<IActionResult> GetAll()
         {
-            IEnumerable<ToDo> toDoList = await _helper.GetAll();
+            IEnumerable<ToDoRequest> toDoList = await _helper.GetAll();
             return Ok(toDoList);
         }
 
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> Update(int id, [FromBody] ToDo toDo)
+        public async Task<IActionResult> Update(int id, [FromBody] ToDoRequest toDo)
         {
             if (id != toDo.Id)
             {
                 return BadRequest();
             }
 
-            ToDo updatedToDo = await _helper.Update(toDo);
+            ToDoRequest updatedToDo = await _helper.Update(toDo);
             if (updatedToDo == null)
             {
                 return NotFound();

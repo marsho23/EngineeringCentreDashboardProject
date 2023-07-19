@@ -52,12 +52,28 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<ToDoDbContext>(options =>
 //    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
-builder.Services.AddDbContext< ToDoDbContext>(options =>
+//builder.Services.AddDbContext<ToDoDbContext>(options =>
+//    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+
+
+//builder.Services.AddDbContext<UserLoginDbContext>(options =>
+//    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+
+
+builder.Services.AddDbContext<EngineeringDashboardDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
 
+
 builder.Services.AddScoped<IToDoHelper, ToDoHelper>();
+builder.Services.AddScoped<IUserLoginHelper, UserLoginHelper>();
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin());
+});
 
 // Add Swagger/OpenAPI
 builder.Services.AddSwaggerGen();
@@ -75,6 +91,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
+
 app.UseAuthorization();
 
 app.MapControllers();

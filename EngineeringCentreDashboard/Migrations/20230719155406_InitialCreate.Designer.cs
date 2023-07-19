@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace EngineeringCentreDashboard.Migrations
 {
-    [DbContext(typeof(ToDoDbContext))]
-    [Migration("20230615100718_InitialCreate")]
+    [DbContext(typeof(EngineeringDashboardDbContext))]
+    [Migration("20230719155406_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,9 +46,56 @@ namespace EngineeringCentreDashboard.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("UserLoginId")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserLoginId");
+
                     b.ToTable("ToDoItems");
+                });
+
+            modelBuilder.Entity("EngineeringCentreDashboard.Models.UserLogin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserLogins");
+                });
+
+            modelBuilder.Entity("EngineeringCentreDashboard.Models.ToDo", b =>
+                {
+                    b.HasOne("EngineeringCentreDashboard.Models.UserLogin", "UserLogin")
+                        .WithMany("ToDos")
+                        .HasForeignKey("UserLoginId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserLogin");
+                });
+
+            modelBuilder.Entity("EngineeringCentreDashboard.Models.UserLogin", b =>
+                {
+                    b.Navigation("ToDos");
                 });
 #pragma warning restore 612, 618
         }

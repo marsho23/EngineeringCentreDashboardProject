@@ -21,7 +21,7 @@ namespace EngineeringCentreDashboard.Tests
         {
             mockHelper = new Mock<IToDoHelper>();
             controller = new ToDoController(mockHelper.Object);
-            sampleToDo = new ToDo(1, "Test ToDo", "Sample description", DateTime.Now);
+            sampleToDo = new ToDo(1, "Test ToDo", "Sample description", DateTime.Now, 1);
         }
 
         [Fact]

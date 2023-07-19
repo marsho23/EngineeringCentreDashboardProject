@@ -1,13 +1,14 @@
 ﻿using EngineeringCentreDashboard.Models;
+using EngineeringCentreDashboard.Models.Request;
 
 namespace EngineeringCentreDashboard.Interfaces
 {
     public interface IToDoHelper
     {
-        Task<ToDo> Get(int id);
-        Task<ToDo> Add(ToDo toDo);
-        Task<IEnumerable<ToDo>> GetAll();
-        Task<ToDo> Update(ToDo toDo);
+        Task<ToDoRequest> Get(int id);
+        Task<ToDoRequest> Add(ToDoRequest toDo);
+        Task<IEnumerable<ToDoRequest>> GetAll();
+        Task<ToDoRequest> Update(ToDoRequest toDo);
         Task Delete(int id);
     }
 }
