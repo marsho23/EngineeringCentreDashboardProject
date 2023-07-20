@@ -96,15 +96,22 @@ namespace EngineeringCentreDashboard.Business
 
         public async Task<ToDoRequest> Update(ToDoRequest toDo)
         {
-
             ToDo toDoDbModel = await _engineeringDashboardDbContext.ToDoItems.FindAsync(toDo.Id);
             if (toDoDbModel != null)
             {
+                toDoDbModel.Title = toDo.Title;
+                toDoDbModel.Description = toDo.Description;
+                toDoDbModel.DueDate = toDo.DueDate;
+                toDoDbModel.IsCompleted = toDo.IsCompleted;
+                toDoDbModel.UserLoginId = toDo.UserLoginId;
+
                 _engineeringDashboardDbContext.ToDoItems.Update(toDoDbModel);
                 await _engineeringDashboardDbContext.SaveChangesAsync();
             }
+
             return new ToDoRequest(toDoDbModel);
         }
+
 
         public async Task Delete(int id)
         {

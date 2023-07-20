@@ -1,6 +1,7 @@
 ﻿using EngineeringCentreDashboard.Filters;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
+using EngineeringCentreDashboard.Models.Request;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace EngineeringCentreDashboard.Controllers
         [HttpPost]
         [ValidateModelState]
         [Route("add")]
-        public async Task<IActionResult> Add([FromBody] UserLogin userLogin)
+        public async Task<IActionResult> Add([FromBody] UserLoginRequest userLogin)
         {
             var addedUserLogin = await _helper.Add(userLogin);
             return Ok(addedUserLogin);
@@ -52,7 +53,7 @@ namespace EngineeringCentreDashboard.Controllers
 
         [HttpPut]
         [Route("update/{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserLogin userLogin)
+        public async Task<IActionResult> Update(int id, [FromBody] UserLoginRequest userLogin)
         {
             if (id != userLogin.Id)
             {

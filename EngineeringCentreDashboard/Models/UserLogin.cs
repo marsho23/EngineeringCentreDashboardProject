@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EngineeringCentreDashboard.Models.Request;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 
 namespace EngineeringCentreDashboard.Models
@@ -17,6 +18,14 @@ namespace EngineeringCentreDashboard.Models
         public UserLogin()
         {
             ToDos = new List<ToDo>();
+        }
+
+        public UserLogin(UserLoginRequest userLoginRequest)
+        {
+            this.Id = userLoginRequest.Id;
+            this.Username = userLoginRequest.Username;
+            this.Password = userLoginRequest.Password;
+            this.Email = userLoginRequest.Email;
         }
 
         public UserLogin(int id, string username, string password, string email)

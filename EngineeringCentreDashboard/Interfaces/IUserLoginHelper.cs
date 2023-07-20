@@ -1,13 +1,14 @@
 ﻿using EngineeringCentreDashboard.Models;
+using EngineeringCentreDashboard.Models.Request;
 
 namespace EngineeringCentreDashboard.Interfaces
 {
     public interface IUserLoginHelper
     {
-        Task<UserLogin> Get(int id);
-        Task<UserLogin> Add(UserLogin userLogin);
-        Task<IEnumerable<UserLogin>> GetAll();
-        Task<UserLogin> Update(UserLogin userLogin);
+        Task<UserLoginRequest> Get(int id);
+        Task<UserLoginRequest> Add(UserLoginRequest userLogin);
+        Task<IEnumerable<UserLoginRequest>> GetAll();
+        Task<UserLoginRequest> Update(UserLoginRequest userLogin);
         Task Delete(int id);
     }
 }

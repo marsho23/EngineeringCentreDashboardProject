@@ -1,6 +1,7 @@
 ﻿using EngineeringCentreDashboard.Data;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
+using EngineeringCentreDashboard.Models.Request;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,29 +17,42 @@ namespace EngineeringCentreDashboard.Business
             _engineeringCentreDashboardDbContext = engineeringCentreDashboardDbContext;
         }
 
-        public async Task<UserLogin> Get(int id)
+        public async Task<UserLoginRequest> Get(int id)
         {
-            return await _engineeringCentreDashboardDbContext.UserLogins.FindAsync(id);
+            UserLogin userLogin= await _engineeringCentreDashboardDbContext.UserLogins.FindAsync(id);
+            return new UserLoginRequest(userLogin);
         }
 
-        public async Task<UserLogin> Add(UserLogin userLogin)
+        public async Task<UserLoginRequest> Add(UserLoginRequest userLogin)
         {
-            await _engineeringCentreDashboardDbContext.UserLogins.AddAsync(userLogin);
+            UserLogin userLoginDbModel = new UserLogin(userLogin);
+            await _engineeringCentreDashboardDbContext.UserLogins.AddAsync(userLoginDbModel);
             await _engineeringCentreDashboardDbContext.SaveChangesAsync();
-            return userLogin;
+            return new UserLoginRequest(userLoginDbModel);
         }
 
-        public async Task<IEnumerable<UserLogin>> GetAll()
+        public async Task<IEnumerable<UserLoginRequest>> GetAll()
         {
-            return await _engineeringCentreDashboardDbContext.UserLogins.ToListAsync();
+            List<UserLogin> userLogins = await _engineeringCentreDashboardDbContext.UserLogins.ToListAsync();
+            return userLogins.Select(userLogin => new UserLoginRequest(userLogin));
         }
 
-        public async Task<UserLogin> Update(UserLogin userLogin)
+        public async Task<UserLoginRequest> Update(UserLoginRequest userLogin)
         {
-            _engineeringCentreDashboardDbContext.UserLogins.Update(userLogin);
-            await _engineeringCentreDashboardDbContext.SaveChangesAsync();
-            return userLogin;
+            UserLogin userLoginDbModel = await _engineeringCentreDashboardDbContext.UserLogins.FindAsync(userLogin.Id);
+            if (userLoginDbModel != null)
+            {
+                userLoginDbModel.Username = userLogin.Username;
+                userLoginDbModel.Password = userLogin.Password;
+                userLoginDbModel.Email = userLogin.Email;
+
+                _engineeringCentreDashboardDbContext.UserLogins.Update(userLoginDbModel);
+                await _engineeringCentreDashboardDbContext.SaveChangesAsync();
+            }
+
+            return new UserLoginRequest(userLoginDbModel);
         }
+
 
         public async Task Delete(int id)
         {
