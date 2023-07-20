@@ -3,13 +3,14 @@
 *@
 
 <div>
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Due Date</th>
                 <th>Is Completed</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody id="todoListContainer">
@@ -34,6 +35,9 @@
                                 <td>${todo.description}</td>
                                 <td>${new Date(todo.dueDate).toLocaleDateString()}</td>
                                 <td>${todo.isCompleted}</td>
+                                <td>
+                                    <button onclick="deleteToDoItem(${todo.id})">Delete</button>
+                                </td>
                             `;
 
                     container.appendChild(row);
@@ -42,5 +46,13 @@
             .catch(function (error) {
                 console.log(error);
             });
+
+        function deleteToDoItem(id) {
+            console.log('Delete item with ID:', id);
+        }
+
+        function updateToDoItem(id) {
+            console.log('Edit item with ID:', id);
+        }
     </script>
 }

@@ -82,9 +82,9 @@ namespace EngineeringCentreDashboard.Controllers
 
         [HttpDelete]
         [Route("delete")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _helper.Delete(id);
+            await _helper.Delete(id);
             return Ok(id);
         }
     }

@@ -1,173 +1,12 @@
-﻿//using EngineeringCentreDashboard.Business;
-//using EngineeringCentreDashboard.Data;
-//using EngineeringCentreDashboard.Interfaces;
-//using EngineeringCentreDashboard.Models;
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore.ChangeTracking;
-//using Moq;
-//using System;
-//using System.Threading.Tasks;
-//using Xunit;
-
-//namespace EngineeringCentreDashboard.Tests
-//{
-//    public class ToDoHelperTests
-//    {
-//        [Fact]
-//        public async void GetAllToDosTest()
-//        {
-//            var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-//                .UseInMemoryDatabase(databaseName: "ToDoDatabase_GetAll")
-//                .Options;
-
-//            // Insert seed data into the database using one instance of the context
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                //var mockToDoItem = new ToDo(1, "Test ToDo", "Sample description", DateTime.Now);
-//                context.ToDoItems.Add(new ToDo(1, "Test ToDo 1", "Sample description", DateTime.Now, 1));
-//                context.ToDoItems.Add(new ToDo(2, "Test ToDo 2", "Sample description", DateTime.Now, 2));
-//                await context.SaveChangesAsync();
-//            }
-
-//            // Use a clean instance of the context to run the test
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var toDoHelper = new ToDoHelper(context);
-//                var toDos = await toDoHelper.GetAll();
-
-//                Assert.Equal(2, toDos.Count());
-//            }
-//        }
-
-//        [Fact]
-//        public async void GetToDoTest()
-//        {
-//            var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-//                .UseInMemoryDatabase(databaseName: "ToDoDatabase_Get")
-//                .Options;
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var testToDo = new ToDo(1, "Test ToDo Get", "Sample description for Get Test", DateTime.Now);
-//                context.ToDoItems.Add(testToDo);
-//                await context.SaveChangesAsync();
-//            }
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var toDoHelper = new ToDoHelper(context);
-//                var toDo = await toDoHelper.Get(1);
-
-//                Assert.NotNull(toDo);
-//                Assert.Equal(1, toDo.Id);
-//            }
-//        }
-
-//        [Fact]
-//        public async void AddToDoTest()
-//        {
-//            var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-//                .UseInMemoryDatabase(databaseName: "ToDoDatabase_Add")
-//                .Options;
-
-//            var testToDo = new ToDo(1, "Test ToDo Add", "Sample description for Add Test", DateTime.Now,true);
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var toDoHelper = new ToDoHelper(context);
-//                var toDo = await toDoHelper.Add(testToDo);
-
-//                //Assert.Equal(1, toDo.Id);
-//                Assert.NotNull(toDo);
-//                Assert.Equal(testToDo.Id, toDo.Id);
-//                Assert.Equal(testToDo.Title, toDo.Title);
-//                Assert.Equal(testToDo.Description, toDo.Description);
-//                Assert.Equal(testToDo.IsCompleted, toDo.IsCompleted);
-//                Assert.Equal(testToDo.DueDate, toDo.DueDate);
-//            }
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var toDo = await context.ToDoItems.FirstOrDefaultAsync();
-//                Assert.NotNull(toDo);
-//                Assert.Equal(testToDo.Id, toDo.Id);
-//                Assert.Equal(testToDo.Title, toDo.Title);
-//                Assert.Equal(testToDo.Description, toDo.Description);
-//                Assert.Equal(testToDo.IsCompleted, toDo.IsCompleted);
-//                Assert.Equal(testToDo.DueDate, toDo.DueDate);
-//            }
-//        }
-
-//        [Fact]
-//        public async void UpdateToDoTest()
-//        {
-//            var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-//                .UseInMemoryDatabase(databaseName: "ToDoDatabase_Update")
-//                .Options;
-
-//            var testToDo = new ToDo(1, "Test ToDo Update", "Sample description for Update Test", DateTime.Now);
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                context.ToDoItems.Add(testToDo);
-//                await context.SaveChangesAsync();
-//            }
-
-//            testToDo.Title = "Updated ToDo";
-//            testToDo.IsCompleted = true;
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var toDoHelper = new ToDoHelper(context);
-//                var updatedToDo = await toDoHelper.Update(testToDo);
-
-//                Assert.Equal("Updated ToDo", updatedToDo.Title);
-//                Assert.True(updatedToDo.IsCompleted);
-//            }
-
-//            using (var context = new ToDod(options))
-//            {
-//                var toDo = await context.ToDoItems.FindAsync(1);
-//                Assert.Equal("Updated ToDo", toDo.Title);
-//                Assert.True(toDo.IsCompleted);
-//            }
-//        }
-
-//        [Fact]
-//        public async void DeleteToDoTest()
-//        {
-//            var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-//                .UseInMemoryDatabase(databaseName: "ToDoDatabase_Delete")
-//                .Options;
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var testToDo = new ToDo(1, "Test ToDo Delete", "Sample description for Delete Test", DateTime.Now,true);
-//                context.ToDoItems.Add(testToDo);
-//                await context.SaveChangesAsync();
-//            }
-
-//            using (var context = new EngineeringDashboardDbContext(options))
-//            {
-//                var toDoHelper = new ToDoHelper(context);
-//                await toDoHelper.Delete(1);
-
-//                Assert.Null(await context.ToDoItems.FindAsync(1));
-//            }
-//        }
-
-
-//    }
-//}
-
-using EngineeringCentreDashboard.Business;
+﻿using EngineeringCentreDashboard.Business;
 using EngineeringCentreDashboard.Data;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
+using EngineeringCentreDashboard.Models.Request;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -176,30 +15,44 @@ namespace EngineeringCentreDashboard.Tests
     public class ToDoHelperTests
     {
         [Fact]
-        public async void GetAllToDosTest()
+        public async Task AddToDoTest()
         {
             var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-                .UseInMemoryDatabase(databaseName: "ToDoDatabase_GetAll")
+                .UseInMemoryDatabase(databaseName: "ToDoDatabase_Add")
                 .Options;
 
-            // Insert seed data into the database using one instance of the context
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                //var mockToDoItem = new ToDo(1, "Test ToDo", "Sample description", DateTime.Now);
-                context.ToDoItems.Add(new ToDo(1, "Test ToDo 1", "Sample description", DateTime.Now, 1));
-                context.ToDoItems.Add(new ToDo(2, "Test ToDo 2", "Sample description", DateTime.Now, 2));
+                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                context.UserLogins.Add(userLogin);
                 await context.SaveChangesAsync();
+
+                var testToDoRequest = new ToDoRequest { Title = "Test ToDo Add", Description = "Sample description for Add Test", DueDate = DateTime.Now, UserLoginId = userLogin.Id };
+
+                var toDoHelper = new ToDoHelper(context);
+                var toDo = await toDoHelper.Add(testToDoRequest);
+
+                Assert.NotNull(toDo);
+                Assert.Equal(1, toDo.Id);
+                Assert.Equal(testToDoRequest.Title, toDo.Title);
+                Assert.Equal(testToDoRequest.Description, toDo.Description);
+                Assert.True((testToDoRequest.DueDate - toDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(testToDoRequest.UserLoginId, toDo.UserLoginId);
             }
 
-            // Use a clean instance of the context to run the test
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var toDoHelper = new ToDoHelper(context);
-                var toDos = await toDoHelper.GetAll();
-
-                Assert.Equal(2, toDos.Count());
+                var toDo = await context.ToDoItems.FirstOrDefaultAsync();
+                Assert.NotNull(toDo);
+                Assert.Equal(1, toDo.Id);
+                Assert.Equal("Test ToDo Add", toDo.Title);
+                Assert.Equal("Sample description for Add Test", toDo.Description);
+                Assert.True((DateTime.Now - toDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(1, toDo.UserLoginId);
             }
         }
+
+
 
         [Fact]
         public async Task GetToDoTest()
@@ -210,7 +63,11 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var testToDo = new ToDo(1, "Test ToDo Get", "Sample description for Get Test", DateTime.Now, 1);
+                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                context.UserLogins.Add(userLogin);
+                await context.SaveChangesAsync();
+
+                var testToDo = new ToDo { Id = 1, Title = "Test ToDo Get", Description = "Sample description for Get Test", DueDate = DateTime.Now, UserLoginId = userLogin.Id };
                 context.ToDoItems.Add(testToDo);
                 await context.SaveChangesAsync();
             }
@@ -222,40 +79,51 @@ namespace EngineeringCentreDashboard.Tests
 
                 Assert.NotNull(toDo);
                 Assert.Equal(1, toDo.Id);
+                Assert.Equal("Test ToDo Get", toDo.Title);
+                Assert.Equal("Sample description for Get Test", toDo.Description);
+                Assert.True((DateTime.Now - toDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(1, toDo.UserLoginId);
             }
         }
 
         [Fact]
-        public async Task AddToDoTest()
+        public async Task GetAllToDosTest()
         {
             var options = new DbContextOptionsBuilder<EngineeringDashboardDbContext>()
-                .UseInMemoryDatabase(databaseName: "ToDoDatabase_Add")
+                .UseInMemoryDatabase(databaseName: "ToDoDatabase_GetAll")
                 .Options;
-
-            var testToDo = new ToDo(1, "Test ToDo Add", "Sample description for Add Test", DateTime.Now, true, 1);
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var toDoHelper = new ToDoHelper(context);
-                var toDo = await toDoHelper.Add(testToDo);
+                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                context.UserLogins.Add(userLogin);
+                await context.SaveChangesAsync();
 
-                Assert.NotNull(toDo);
-                Assert.Equal(testToDo.Id, toDo.Id);
-                Assert.Equal(testToDo.Title, toDo.Title);
-                Assert.Equal(testToDo.Description, toDo.Description);
-                Assert.Equal(testToDo.IsCompleted, toDo.IsCompleted);
-                Assert.Equal(testToDo.DueDate, toDo.DueDate);
+                context.ToDoItems.Add(new ToDo { Id = 1, Title = "Test ToDo 1", Description = "Sample description", DueDate = DateTime.Now, UserLoginId = userLogin.Id });
+                context.ToDoItems.Add(new ToDo { Id = 2, Title = "Test ToDo 2", Description = "Sample description", DueDate = DateTime.Now, UserLoginId = userLogin.Id });
+                await context.SaveChangesAsync();
             }
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var toDo = await context.ToDoItems.FirstOrDefaultAsync();
-                Assert.NotNull(toDo);
-                Assert.Equal(testToDo.Id, toDo.Id);
-                Assert.Equal(testToDo.Title, toDo.Title);
-                Assert.Equal(testToDo.Description, toDo.Description);
-                Assert.Equal(testToDo.IsCompleted, toDo.IsCompleted);
-                Assert.Equal(testToDo.DueDate, toDo.DueDate);
+                var toDoHelper = new ToDoHelper(context);
+                var toDos = await toDoHelper.GetAll();
+
+                Assert.Equal(2, toDos.Count());
+
+                var firstToDo = toDos.First();
+                Assert.Equal(1, firstToDo.Id);
+                Assert.Equal("Test ToDo 1", firstToDo.Title);
+                Assert.Equal("Sample description", firstToDo.Description);
+                Assert.True((DateTime.Now - firstToDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(1, firstToDo.UserLoginId);
+
+                var secondToDo = toDos.Skip(1).First();
+                Assert.Equal(2, secondToDo.Id);
+                Assert.Equal("Test ToDo 2", secondToDo.Title);
+                Assert.Equal("Sample description", secondToDo.Description);
+                Assert.True((DateTime.Now - secondToDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(1, secondToDo.UserLoginId);
             }
         }
 
@@ -266,31 +134,37 @@ namespace EngineeringCentreDashboard.Tests
                 .UseInMemoryDatabase(databaseName: "ToDoDatabase_Update")
                 .Options;
 
-            var testToDo = new ToDo(1, "Test ToDo Update", "Sample description for Update Test", DateTime.Now, 1);
-
             using (var context = new EngineeringDashboardDbContext(options))
             {
+                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                context.UserLogins.Add(userLogin);
+                await context.SaveChangesAsync();
+
+                var testToDo = new ToDo { Id = 1, Title = "Test ToDo Update", Description = "Sample description for Update Test", DueDate = DateTime.Now, UserLoginId = userLogin.Id };
                 context.ToDoItems.Add(testToDo);
                 await context.SaveChangesAsync();
             }
 
-            testToDo.Title = "Updated ToDo";
-            testToDo.IsCompleted = true;
-
             using (var context = new EngineeringDashboardDbContext(options))
             {
                 var toDoHelper = new ToDoHelper(context);
-                var updatedToDo = await toDoHelper.Update(testToDo);
+                var updatedToDoRequest = new ToDoRequest { Id = 1, Title = "Updated ToDo", Description = "Updated description", DueDate = DateTime.Now.AddDays(1), UserLoginId = 1 };
+                var updatedToDo = await toDoHelper.Update(updatedToDoRequest);
 
+                Assert.Equal(1, updatedToDo.Id);
                 Assert.Equal("Updated ToDo", updatedToDo.Title);
-                Assert.True(updatedToDo.IsCompleted);
+                Assert.Equal("Updated description", updatedToDo.Description);
+                Assert.True((DateTime.Now.AddDays(1) - updatedToDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(1, updatedToDo.UserLoginId);
             }
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
                 var toDo = await context.ToDoItems.FindAsync(1);
                 Assert.Equal("Updated ToDo", toDo.Title);
-                Assert.True(toDo.IsCompleted);
+                Assert.Equal("Updated description", toDo.Description);
+                Assert.True((DateTime.Now.AddDays(1) - toDo.DueDate).TotalSeconds < 1);
+                Assert.Equal(1, toDo.UserLoginId);
             }
         }
 
@@ -303,7 +177,11 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var testToDo = new ToDo(1, "Test ToDo Delete", "Sample description for Delete Test", DateTime.Now, true, 1);
+                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                context.UserLogins.Add(userLogin);
+                await context.SaveChangesAsync();
+
+                var testToDo = new ToDo { Id = 1, Title = "Test ToDo Delete", Description = "Sample description for Delete Test", DueDate = DateTime.Now, UserLoginId = userLogin.Id };
                 context.ToDoItems.Add(testToDo);
                 await context.SaveChangesAsync();
             }
@@ -313,9 +191,12 @@ namespace EngineeringCentreDashboard.Tests
                 var toDoHelper = new ToDoHelper(context);
                 await toDoHelper.Delete(1);
 
-                Assert.Null(await context.ToDoItems.FindAsync(1));
+                var toDo = await context.ToDoItems.FindAsync(1);
+                Assert.Null(toDo);
             }
         }
+
     }
 }
+
 
