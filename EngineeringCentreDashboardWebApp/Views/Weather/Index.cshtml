@@ -20,6 +20,10 @@
                                 <td>${todo.description}</td>
                                 <td>${new Date(todo.dueDate).toLocaleDateString()}</td>
                                 <td>${todo.isCompleted}</td>
+                                <td>
+                                    <button onclick="deleteToDoItem(${todo.id})">Delete</button>
+                                    <button onclick="updateToDoItem(${todo.id})">Edit</button>
+                                </td>
                             `;
 
                     container.appendChild(row);
@@ -28,6 +32,58 @@
             .catch(function (error) {
                 console.log(error);
             });
+
+        //function deleteToDoItem(id) {
+        //    console.log('Delete item with ID:', id);
+        //}
+
+        function deleteToDoItem(id) {
+            axios.delete(`https://localhost:7181/api/ToDo/delete?id=${id}`)
+                .then(function (response) {
+                    console.log('Deleted item with ID:', id);
+                    // Assuming you want to refresh the list after a delete operation
+                    refreshToDoList();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function refreshToDoList() {
+            axios.get('https://localhost:7181/api/ToDo/getall')
+                .then(function (response) {
+                    var data = response.data;
+                    var container = document.getElementById('todoListContainer');
+                    container.innerHTML = '';
+
+                    data.forEach(todo => {
+                        var row = document.createElement('tr');
+                        row.innerHTML = `
+                                    <td>${todo.title}</td>
+                                    <td>${todo.description}</td>
+                                    <td>${new Date(todo.dueDate).toLocaleDateString()}</td>
+                                    <td>${todo.isCompleted}</td>
+                                    <td>
+                                        <button onclick="deleteToDoItem(${todo.id})">Delete</button>
+                                        <button onclick="updateToDoItem(${todo.id})">Edit</button>
+                                    </td>
+                                `;
+
+                        container.appendChild(row);
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        refreshToDoList();  // Call this function when the page loads
+
+
+
+        function updateToDoItem(id) {
+            console.log('Edit item with ID:', id);
+        }
     </script>
 }
 
