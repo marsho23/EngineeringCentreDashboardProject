@@ -16,6 +16,19 @@ namespace EngineeringCentreDashboard.Business
         {
             _engineeringCentreDashboardDbContext = engineeringCentreDashboardDbContext;
         }
+        public async Task<UserLoginRequest> GetOrCreateUser(string email)
+        {
+            var user = await _engineeringCentreDashboardDbContext.UserLogins.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                user = new UserLogin { Email = email};
+                _engineeringCentreDashboardDbContext.UserLogins.Add(user);
+                await _engineeringCentreDashboardDbContext.SaveChangesAsync();
+            }
+
+            return new UserLoginRequest(user);
+        }
 
         public async Task<UserLoginRequest> Get(int id)
         {
@@ -42,8 +55,8 @@ namespace EngineeringCentreDashboard.Business
             UserLogin userLoginDbModel = await _engineeringCentreDashboardDbContext.UserLogins.FindAsync(userLogin.Id);
             if (userLoginDbModel != null)
             {
-                userLoginDbModel.Username = userLogin.Username;
-                userLoginDbModel.Password = userLogin.Password;
+                //userLoginDbModel.Username = userLogin.Username;
+                //userLoginDbModel.Password = userLogin.Password;
                 userLoginDbModel.Email = userLogin.Email;
 
                 _engineeringCentreDashboardDbContext.UserLogins.Update(userLoginDbModel);

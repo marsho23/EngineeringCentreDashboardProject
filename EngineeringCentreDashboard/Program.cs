@@ -41,6 +41,7 @@
 using EngineeringCentreDashboard.Business;
 using EngineeringCentreDashboard.Data;
 using EngineeringCentreDashboard.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,6 +78,20 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader());
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/account/google-login";
+    })
+    .AddGoogle(options =>
+    {
+        options.ClientId = "464389598970-ef6kaora26hv8kge7lt4ggrnsti514bu.apps.googleusercontent.com";
+        options.ClientSecret = "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";
+    });
+
 // Add Swagger/OpenAPI
 builder.Services.AddSwaggerGen();
 
@@ -94,6 +109,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
+app.UseAuthentication();
 
 app.UseAuthorization();
 

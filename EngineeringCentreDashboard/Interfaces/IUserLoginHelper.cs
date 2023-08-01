@@ -10,5 +10,7 @@ namespace EngineeringCentreDashboard.Interfaces
         Task<IEnumerable<UserLoginRequest>> GetAll();
         Task<UserLoginRequest> Update(UserLoginRequest userLogin);
         Task Delete(int id);
+        Task<UserLoginRequest> GetOrCreateUser(string email);
+
     }
 }

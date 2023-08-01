@@ -23,7 +23,8 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                var userLogin = new UserLogin { Id = 1, GoogleID = "testGoogleId", Username = "testuser", Email = "testuser@example.com" };
+                //var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
                 context.UserLogins.Add(userLogin);
                 await context.SaveChangesAsync();
 
@@ -63,7 +64,8 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                var userLogin = new UserLogin { Id = 1, GoogleID="testGoogleId", Username = "testuser",Email = "testuser@example.com" };
+                //var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
                 context.UserLogins.Add(userLogin);
                 await context.SaveChangesAsync();
 
@@ -95,7 +97,8 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                var userLogin = new UserLogin { Id = 1, GoogleID = "testGoogleId", Username = "testuser", Email = "testuser@example.com" };
+                //var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
                 context.UserLogins.Add(userLogin);
                 await context.SaveChangesAsync();
 
@@ -136,7 +139,8 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                var userLogin = new UserLogin { Id = 1, GoogleID = "testGoogleId", Username = "testuser", Email = "testuser@example.com" };
+                //var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
                 context.UserLogins.Add(userLogin);
                 await context.SaveChangesAsync();
 
@@ -177,7 +181,8 @@ namespace EngineeringCentreDashboard.Tests
 
             using (var context = new EngineeringDashboardDbContext(options))
             {
-                var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
+                var userLogin = new UserLogin { Id = 1, GoogleID = "testGoogleId", Username = "testuser", Email = "testuser@example.com" };
+                //var userLogin = new UserLogin { Id = 1, Username = "testuser", Password = "password", Email = "testuser@example.com" };
                 context.UserLogins.Add(userLogin);
                 await context.SaveChangesAsync();
 

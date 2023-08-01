@@ -84,6 +84,22 @@
         function updateToDoItem(id) {
             console.log('Edit item with ID:', id);
         }
+
+        //// Function to log out from Google
+        //function googleLogout() {
+        //    var newWindow = window.open('https://mail.google.com/mail/?logout&hl=fr', 'Disconnect from Google', 'width=100,height=50,menubar=no,status=no,location=no,toolbar=no,scrollbars=no,top=200,left=200');
+        //    setTimeout(function () {
+        //        if (newWindow) newWindow.close();
+        //        window.location.href = "auth/google"; 
+        //    }, 3000);
+        //}
+        //document.getElementById("logoutForm").addEventListener("submit", function (event) {
+        //    event.preventDefault(); 
+        //    googleLogout();
+        //    setTimeout(function () {
+        //        document.getElementById("logoutForm").submit();
+        //    }, 3000);
+        //});
     </script>
 }
 
@@ -146,3 +162,20 @@
         </div>
     </div>
 </div>
+
+<div class="logout-container">
+    <form id="logoutForm" asp-action="Logout" asp-controller="Weather" method="post">
+        <button type="submit" class="btn btn-primary">Logout</button>
+    </form>
+</div>
+<style>
+    .logout-container {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .logout-container button {
+        padding: 5px 10px;
+    }
+</style>
