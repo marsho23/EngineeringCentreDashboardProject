@@ -3,10 +3,13 @@ using EngineeringCentreDashboard.Filters;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
 using EngineeringCentreDashboard.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System.Net;
+using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace EngineeringCentreDashboard.Controllers
 {
@@ -61,6 +64,17 @@ namespace EngineeringCentreDashboard.Controllers
             return Ok(toDoList);
         }
 
+        [HttpGet]
+        [Route("getByUserLoginId")]
+        [EnableCors("AllowAllOrigins")]
+        public async Task<IActionResult> GetByUserLoginId(string email)
+        {
+
+            IEnumerable<ToDoRequest> toDoItems =await _helper.GetByUserLoginId(email);
+
+            //var toDoRequests = toDoItems.Select(toDo => new ToDoRequest(toDo)).ToList();
+            return Ok(toDoItems);
+        }
 
         [HttpPut]
         [Route("update")]

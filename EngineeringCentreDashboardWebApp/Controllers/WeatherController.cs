@@ -41,11 +41,14 @@ namespace EngineeringCentreDashboardWebApp.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    ViewData["email"] = email;
                     var weatherResponse = await _weatherService.GetForecastForToday("Manchester");
                     return View(weatherResponse);
                 }
             }
             email = User.FindFirstValue(ClaimTypes.Email);
+            ViewData["email"] = email;
+
             var userLogin = await _userLoginHelper.GetOrCreateUser(email);
             var claims = new List<Claim>
             {

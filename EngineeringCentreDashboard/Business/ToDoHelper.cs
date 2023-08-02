@@ -61,6 +61,7 @@ using EngineeringCentreDashboard.Models.Request;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EngineeringCentreDashboard.Business
@@ -121,6 +122,26 @@ namespace EngineeringCentreDashboard.Business
                 _engineeringDashboardDbContext.ToDoItems.Remove(toDo);
                 await _engineeringDashboardDbContext.SaveChangesAsync();
             }
+        }
+
+
+        public async Task<IEnumerable<ToDoRequest>> GetByUserLoginId(string email)
+        {
+            // Get the userLoginId based on the provided userEmail
+            int? userLoginId = _engineeringDashboardDbContext.UserLogins
+                .Where(u => u.Email == email)
+                .Select(u => (int?)u.Id)
+                .FirstOrDefault();
+
+            if (userLoginId.HasValue)
+            {
+                // Return the To Do items for the userLoginId
+                List<ToDo> toDoItems = await _engineeringDashboardDbContext.ToDoItems.Where(toDo => toDo.UserLoginId == userLoginId.Value).ToListAsync();
+                return toDoItems.Select(toDo => new ToDoRequest(toDo));
+            }
+
+            // If the userLoginId is not found, return an empty list 
+            return new List<ToDoRequest>();
         }
     }
 }
