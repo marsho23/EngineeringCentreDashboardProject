@@ -10,7 +10,8 @@
     <script>
 
         var user = '@ViewData["email"]';
-      
+        //var name = '@ViewData["name"]';
+        //console.log(name);
 
         function refreshToDoList(email) {
             axios.get('https://localhost:7181/api/ToDo/getByUserLoginId?email='+email
@@ -40,7 +41,6 @@
                 });
         }
         refreshToDoList(user);
-        alert(userAuthorised);
 
         function deleteToDoItem(id) {
             axios.delete(`https://localhost:7181/api/ToDo/delete?id=${id}`)

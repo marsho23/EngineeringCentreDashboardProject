@@ -34,6 +34,7 @@ namespace EngineeringCentreDashboardWebApp.Controllers
 
             //var email = User.FindFirstValue(ClaimTypes.Email);
             var email = User.FindFirstValue(ClaimTypes.Name);
+            //string name;
             string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             bool isValidEmail = Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
 
@@ -41,13 +42,19 @@ namespace EngineeringCentreDashboardWebApp.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    //name = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     ViewData["email"] = email;
+                    //ViewData["name"] = name;
                     var weatherResponse = await _weatherService.GetForecastForToday("Manchester");
                     return View(weatherResponse);
                 }
             }
             email = User.FindFirstValue(ClaimTypes.Email);
             ViewData["email"] = email;
+
+            //name = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //ViewData["name"] = name;
+
 
             var userLogin = await _userLoginHelper.GetOrCreateUser(email);
             var claims = new List<Claim>

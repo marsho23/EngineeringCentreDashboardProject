@@ -11,26 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<EngineeringDashboardDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-//})
-//   .AddCookie()
-//   .AddCookie("Identity.External")
-//   //.AddOpenIdConnect(options =>
-//   //{
-//   //    options.ClientId = "464389598970-ef6kaora26hv8kge7lt4ggrnsti514bu.apps.googleusercontent.com";
-//   //    options.ClientSecret = "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";
-//   //    options.Authority = "https://accounts.google.com/";
-//   //    options.CallbackPath = "/signin-google"; // The callback path where Google should redirect after authentication.
-//   //});
-//   .AddGoogle(options =>
-//   {
-//       options.ClientId = "464389598970-ef6kaora26hv8kge7lt4ggrnsti514bu.apps.googleusercontent.com";
-//       options.ClientSecret = "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";
-//   });
 
     builder.Services.AddAuthentication(options =>
     {
@@ -62,35 +42,6 @@ builder.Services.AddCors(options =>
         builder => builder.AllowAnyOrigin());
 });
 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("MyPolicy",
-//        builder =>
-//        {
-//            builder.WithOrigins("https://localhost:7181", "https://localhost:7187", "https://localhost:5432")
-//                   .AllowAnyHeader()
-//                   .AllowAnyMethod();
-//        });
-//});
-
-
-
-
-
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//})
-//    .AddCookie(options =>
-//    {
-//        options.LoginPath = "/account/google-login";
-//    })
-//    .AddGoogle(options =>
-//    {
-//        options.ClientId = "464389598970-ef6kaora26hv8kge7lt4ggrnsti514bu.apps.googleusercontent.com";
-//        options.ClientSecret = "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";
-//        options.SignInScheme = IdentityConstants.ExternalScheme;
-//    });
 
 var app = builder.Build();
 
@@ -112,6 +63,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Weather}/{action=Index}/{id?}");
 
 app.Run();
