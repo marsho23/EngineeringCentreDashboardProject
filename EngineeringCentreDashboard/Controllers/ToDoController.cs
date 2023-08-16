@@ -3,6 +3,7 @@ using EngineeringCentreDashboard.Filters;
 using EngineeringCentreDashboard.Interfaces;
 using EngineeringCentreDashboard.Models;
 using EngineeringCentreDashboard.Models.Request;
+using IdGen;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -30,13 +31,16 @@ namespace EngineeringCentreDashboard.Controllers
         [HttpPost]
         [ValidateModelState]
         [Route("add")]
+        [EnableCors("AllowAllOrigins")]
         public IActionResult Add([FromBody] ToDoRequest toDo)
         {
             //int userLoginId =(int) toDo.UserLoginId; 
             //UserLogin userLogin = _userLoginHelper.GetUserLoginById(userLoginId); 
 
             //toDo.UserLogin = userLogin;
-
+            var generator = new IdGenerator(0);
+            var id = generator.CreateId();
+            toDo.Id = id.ToString();
             _helper.Add(toDo);
             return Ok(toDo);
         }
@@ -76,16 +80,30 @@ namespace EngineeringCentreDashboard.Controllers
             return Ok(toDoItems);
         }
 
-        [HttpPut]
-        [Route("update")]
-        public async Task<IActionResult> Update(int id, [FromBody] ToDoRequest toDo)
-        {
-            if (id != toDo.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut]
+        //[Route("update")]
+        //public async Task<IActionResult> Update(int id, [FromBody] ToDoRequest toDo)
+        //{
+        //    if (id != toDo.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            ToDoRequest updatedToDo = await _helper.Update(toDo);
+        //    ToDoRequest updatedToDo = await _helper.Update(toDo);
+        //    if (updatedToDo == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(updatedToDo);
+        //}
+
+        [HttpPut]
+        [Route("completeTask")]
+        public async Task<IActionResult> CompleteTask(string id)
+        {
+            long.TryParse(id, out long longId);
+            ToDoRequest updatedToDo = await _helper.CompleteTask(longId);
             if (updatedToDo == null)
             {
                 return NotFound();
@@ -96,10 +114,13 @@ namespace EngineeringCentreDashboard.Controllers
 
         [HttpDelete]
         [Route("delete")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            await _helper.Delete(id);
+            long.TryParse(id, out long longId);
+
+            await _helper.Delete(longId);
             return Ok(id);
         }
+
     }
 }

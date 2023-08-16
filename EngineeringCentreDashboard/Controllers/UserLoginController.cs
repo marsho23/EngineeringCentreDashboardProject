@@ -76,5 +76,15 @@ namespace EngineeringCentreDashboard.Controllers
             await _helper.Delete(id);
             return Ok(id);
         }
+
+        [HttpGet]
+        [Route("getByEmail/{email}")]
+        public async Task<IActionResult> GetIdByEmail(string email)
+        {
+            var user = await _helper.GetOrCreateUser(email);
+            //ViewData["email"] = email;
+            //ViewData["userId"] = user.Id;
+            return Ok(user);
+        }
     }
 }

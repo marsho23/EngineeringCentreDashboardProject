@@ -11,6 +11,8 @@ namespace EngineeringCentreDashboard.Interfaces
         Task<IEnumerable<ToDoRequest>> GetByUserLoginId(string email);
 
         Task<ToDoRequest> Update(ToDoRequest toDo);
-        Task Delete(int id);
+        Task Delete(long id);
+        Task<ToDoRequest> CompleteTask(long id);
+
     }
 }

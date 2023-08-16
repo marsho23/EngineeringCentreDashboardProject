@@ -4,7 +4,7 @@ namespace EngineeringCentreDashboard.Models.Request
 {
     public class ToDoRequest
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -18,15 +18,16 @@ namespace EngineeringCentreDashboard.Models.Request
 
         //[Required]
         public int? UserLoginId { get; set; }
-
+        //public string UserLoginEmail { get; set; }
         public ToDoRequest(ToDo toDo)
         {
-            this.Id = toDo.Id;
+            this.Id = toDo.Id.ToString();
             this.DueDate = toDo.DueDate;
             this.Title = toDo.Title;
             this.Description = toDo.Description;
             this.IsCompleted = toDo.IsCompleted;
             this.UserLoginId = toDo.UserLoginId;
+            //this.UserLoginEmail = toDo.UserLoginEmail;
         }
 
         public ToDoRequest()

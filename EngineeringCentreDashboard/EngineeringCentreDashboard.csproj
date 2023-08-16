@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.61.0" />
+    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.61.0" />
+    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.61.0.3116" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.61.0.1869" />
+    <PackageReference Include="IdGen" Version="3.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.18" />
@@ -22,8 +25,17 @@
     <PackageReference Include="Npgsql" Version="6.0.9" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
     <PackageReference Include="RestSharp" Version="106.15.0" />
+    <PackageReference Include="ServiceStack" Version="6.10.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Keys\engineering-centre-dashboard-e7295ccf8f0a.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -15,10 +15,10 @@ namespace EngineeringCentreDashboard.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserLogin>()
-                .HasMany(t=>t.ToDos)
-                .WithOne(t=>t.UserLogin)
-                .HasForeignKey(t=>t.UserLoginId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(t => t.ToDos)
+                .WithOne(t => t.UserLogin)
+                .HasForeignKey(t => t.UserLoginId);
+                //.OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

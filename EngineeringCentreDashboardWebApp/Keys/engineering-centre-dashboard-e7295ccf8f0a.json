@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "engineering-centre-dashboard",
+  "private_key_id": "e7295ccf8f0a0a5399e6ff4e0afb70bc34e415c5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkuP1bFxams3KO\nRmueE7ljECUWjk4Bh8GpZ6qbkyFBW2YEBuQU8kJhF1TBV6XtJtJTbm/mciHMpCx0\nOAR1MLaRp3xw0soMmPp7EDvB2ZkcSmumnOygb6h6sbm4xoeFqRQj6KC1tWaum8Jp\n36YN9G/OAzxGqQxYuExq6PhoAfXEBD2FEJ3vTFxlILFjGzAxK3zvIfj4tB96xu+Y\nYZb3l5VGGbMiAS1tpJ0W/PhCYEghMw4EooxHscsk3j9ByFaMlGozVts0Fpk3AgqD\nFLUBnCLMQZWa7OUnW29LC6ZXucvez3O5yj53sY+ZR3oq7MTbNxe8PmB0x18X0kdi\nAWnWLYKfAgMBAAECggEAKVty7RhubPtYE0W2BnHwVWF71l5zUmoJ4yUujjISIu02\nP2OVh3bN2L+5XXPKqrDZFO6A9OyJ9O3xZVqdL+lDpW1WTqN17FTKavSH9GNUUGiU\n/7edp6hxNiECPtTFuPbbIirpksXRWpyr4tYuxIkvOxvP2fPesDXRpfQJTl/Tm1uI\nBBzlK9rMUU3nwgjMURGrkixYteJb2CG41XW238uEn50OnNK2ak+Um0A3CGGgY8sx\n78MbDy278SCH3mKmpCj3HotxKl8dGFHm4E2nuGcGCWalzIW+Zu8yCyVJr6cUiFTU\nhXmz+ZtRvmo4SpDvfeg09QqJBqPcUm2qRHRWbrGzxQKBgQDUSDdgCZ+0ekBNREx8\nCduRsydxUov2hktfwXVa8YHKMt4f4cheFUaW7VJEAEtcLu7EfxYKOi7vjesl/KGD\nT8x6qjdVjNDI5w5bYXvm+Ss+u1net8tCXfUn4XHJLMyX/+mclqFfXNNtekZytUY+\n6JDZhJwljgTs0FVqLebxsEcZFQKBgQDGpWBz0Uc+8Bu8f7HApBaF5jtQv7W8FnHi\nov0/8bqlzcNgwFRkAoKeLuGskioRkSTvI0iVltpkrn1HEwf1IjLKtaY6bOMDSBJg\niVpisnKkYVxZmzSyF9N/MMsdljP3LhsjBFnpSGrHyZNHh+17jLu3G3lHvenk+fxK\nDbhUtNBx4wKBgAfeKVdA5A9vXITAnEkYoG+1ASg9E/zuG0sQQ4Y8X0AcRIlP9/os\ntbIQV7U3gZOIFcdoomt8npK4YtfElkPkqEJ/no9oKbDYh3qxkUMNRyILFZignUL3\ncoeo3mvDYk3b6U+pcY+0RA3Rs1y7BUB9pCi7toHZ0qroSdImo2Gf0/LFAoGBAK/Z\ndqkQeqGcrPERmamPmOCwD5JMI/V9aRPYdZhFxZVBsdPUbuCZ2Edv+RdrzRIAC1In\nSfoisPKwBPcGQeUfgRcx9xWBjvU4uAv9i6YTkqkyBy7L1rpRnUjbSPPII/iNODin\ngXCiSuTR7S9FhVX6H7LY/2QjGws4wb5MpwFVj7FBAoGAdyL3NL6Uurxh/8YI1FUJ\niljt3OCthjG/cdGsg0tPfaq5oZu3UlNgemLNo5x1lvLe6cdx4jZcFJYfo1o1SzvV\nY/pn6hSYvFlUAQk+6Ossekw54NUjoOkX7StDYXDz00/t2+xU4dSmRF8mBH3/Fk5t\nt3o5JGXdWi5BGfnR/5JmGaQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "google-calendar-app@engineering-centre-dashboard.iam.gserviceaccount.com",
+  "client_id": "108057727834638296704",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/google-calendar-app%40engineering-centre-dashboard.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -34,6 +34,7 @@ builder.Services.AddDbContext<EngineeringDashboardDbContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IUserLoginHelper, UserLoginHelper>();
+builder.Services.AddScoped<IGoogleCalendarHelper, GoogleCalendarHelper>();
 
 
 builder.Services.AddCors(options =>

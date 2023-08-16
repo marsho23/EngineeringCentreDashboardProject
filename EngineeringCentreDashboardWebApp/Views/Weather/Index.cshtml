@@ -4,43 +4,216 @@
 @{
     ViewData["Title"] = "Dashboard";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/vapor/bootstrap.min.css">
+</head>
+<body>
 
-@section Scripts {
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h2>Calendar Events</h2>
+                <div id="calendarEventsContainer"></div>
+            </div>
+            <div class="col-sm">
+                <h2>To Do List</h2>
+                <div id="todoListContainer"></div>
+                <button id="addTodoButton" class="btn btn-primary mb-2">Add</button>
+            </div>
+            <div class="col-sm">
+                <h2>Today's Weather</h2>
+                @if (Model.City != null)
+                {
+                    <p class="lead">@Model.City.Name, @Model.City.Country</p>
+                }
+                    <div class="weather-card">
+                        <div class="card-body">
+                            @*<h5 class="card-title">Main Weather Information</h5>*@
+                            <p class="card-text">Temperature: @Model.List[0].Main.Temp &#8451;</p>
+                            <p class="card-text">Feels Like: @Model.List[0].Main.Feels_like &#8451;</p>
+                            <p class="card-text">Pressure: @Model.List[0].Main.Pressure hPa</p>
+                            <p class="card-text">Humidity: @Model.List[0].Main.Humidity %</p>
+                        </div>
+                    </div>
+                    <div class="weather-card">
+                        <div class="card-body">
+                            <p></p>
+                            @*<h5 class="card-title">Additional Weather Information</h5>*@
+                            @foreach (var weather in Model.List[0].Weather)
+                            {
+                                <p class="card-text">Description: @weather.Description</p>
+                                <p class="card-text">Icon: <img src="https://openweathermap.org/img/wn/@(weather.Icon)" alt="Weather Icon" /></p>
+                            }
+                            <p class="card-text">Clouds: @Model.List[0].Clouds.All %</p>
+                        <p class="card-text">Wind Speed: @Model.List[0].Wind.Speed m/s</p>
+                        <p class="card-text">Wind Direction: @Model.List[0].Wind.Deg &deg;</p>
+                    </div>
+                </div>
+                
+              
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="addTodoModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModalButton" class="close">&times;</span>
+            <h2>Add New To-Do</h2>
+            <input type="text" id="titleInput" placeholder="Title">
+            <input type="text" id="descriptionInput" placeholder="Description">
+            <input type="date" id="dueDateInput">
+            <input type="hidden" id="userEmailInput" value="@ViewData["email"]">
+            <button id="submitTodoModalButton">Submit</button>
+        </div>
+    </div>
+
+
+
+    <div class="logout-container">
+        <form id="logoutForm" asp-action="Logout" asp-controller="Weather" method="post">
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
+
+    <style>
+        .completed-task {
+            background-color: dimgrey;
+        }
+
+        .weather-card {
+            background-color: none;
+        }
+
+        .logout-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+            .logout-container button {
+                padding: 5px 10px;
+            }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-
         var user = '@ViewData["email"]';
-        //var name = '@ViewData["name"]';
-        //console.log(name);
+        var name = '@ViewData["name"]';
+        var userId = '@ViewData["userId"]';
+        console.log(userId);
 
         function refreshToDoList(email) {
-            axios.get('https://localhost:7181/api/ToDo/getByUserLoginId?email='+email
-            ).then(function (response) {
+            axios.get('https://localhost:7181/api/ToDo/getByUserLoginId?email=' + email)
+                .then(function (response) {
                     var data = response.data;
                     var container = document.getElementById('todoListContainer');
                     container.innerHTML = '';
-
                     data.forEach(todo => {
-                        var row = document.createElement('tr');
-                        row.innerHTML = `
-                                            <td>${todo.title}</td>
-                                            <td>${todo.description}</td>
-                                            <td>${new Date(todo.dueDate).toLocaleDateString()}</td>
-                                            <td>${todo.isCompleted}</td>
-                                            <td>
-                                                <button onclick="deleteToDoItem(${todo.id})">Delete</button>
-                                                <button onclick="updateToDoItem(${todo.id})">Edit</button>
-                                            </td>
-                                        `;
+                        var card = document.createElement('div');
+                        card.className = 'card mb-3';
+                        if (todo.isCompleted) { 
+                            console.log(todo.isCompleted);
+                            card.className += ' completed-task';
+                        }
+                        card.innerHTML = `
+                        <div class="card-header">${todo.title}</div>
+                        <div class="card-body">
+                            <p class="card-text">${todo.description}</p>
+                            <p class="card-text">Due Date: ${new Date(todo.dueDate).toLocaleDateString()}</p>
+                        </div>
+                        <div class="card-footer">
+                    `;
+                        if (!todo.isCompleted) {
+                            card.innerHTML += `
+                            <button onclick="completeToDoItem('${todo.id}')" class="btn btn-warning">Done</button>
+                        `;
+                        }
+                        card.innerHTML += `
+                            <button onclick="deleteToDoItem('${todo.id}')" class="btn btn-danger">Delete</button>
+                        </div>
+                    `;
+                        container.appendChild(card);
+                    });
+                })
+        }
 
-                        container.appendChild(row);
+        function refreshCalendarEvents() {
+            axios.get('https://localhost:7181/api/GoogleCalendar/get')
+                .then(function (response) {
+                    var data = response.data;
+                    var container = document.getElementById('calendarEventsContainer');
+                    container.innerHTML = '';  
+
+                    data.forEach(event => {
+                        var eventContainer = document.createElement('div');
+                        eventContainer.className = 'container mb-4 border';
+
+                        var startTime = new Date(event.startDateTime);
+                        var endTime = new Date(event.endDateTime);
+
+                        eventContainer.innerHTML = `
+                            <div class="row">
+                                <div class="col-4"><strong>Event Summary:</strong></div>
+                                <div class="col-8">${event.summary}</div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4"><strong>Start Time:</strong></div>
+                                <div class="col-8">${startTime.toLocaleString()}</div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4"><strong>End Time:</strong></div>
+                                <div class="col-8">${endTime.toLocaleString()}</div>
+                            </div>
+                        `;
+
+                        container.appendChild(eventContainer);
                     });
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
-        refreshToDoList(user);
+
 
         function deleteToDoItem(id) {
             axios.delete(`https://localhost:7181/api/ToDo/delete?id=${id}`)
@@ -53,107 +226,63 @@
                 });
         }
 
-  
-
-        //refreshToDoList();  
-
-
+        function completeToDoItem(id) {
+            axios.put(`https://localhost:7181/api/ToDo/CompleteTask?id=${id}`)
+                .then(function (response) {
+                    console.log('completed item with ID:', id);
+                    refreshToDoList(user);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
         function updateToDoItem(id) {
             console.log('Edit item with ID:', id);
         }
 
-        //// Function to log out from Google
-        //function googleLogout() {
-        //    var newWindow = window.open('https://mail.google.com/mail/?logout&hl=fr', 'Disconnect from Google', 'width=100,height=50,menubar=no,status=no,location=no,toolbar=no,scrollbars=no,top=200,left=200');
-        //    setTimeout(function () {
-        //        if (newWindow) newWindow.close();
-        //        window.location.href = "auth/google"; 
-        //    }, 3000);
-        //}
-        //document.getElementById("logoutForm").addEventListener("submit", function (event) {
-        //    event.preventDefault(); 
-        //    googleLogout();
-        //    setTimeout(function () {
-        //        document.getElementById("logoutForm").submit();
-        //    }, 3000);
-        //});
+        function showAddTodoForm() {
+            document.getElementById('addTodoModal').style.display = 'block';
+        }
+
+        function hideAddTodoForm() {
+            document.getElementById('addTodoModal').style.display = 'none';
+        }
+
+        document.getElementById('addTodoButton').addEventListener('click', showAddTodoForm);
+
+        document.getElementById('closeModalButton').addEventListener('click', hideAddTodoForm);
+
+        document.getElementById('submitTodoModalButton').addEventListener('click', function () {
+            const titleInput = document.getElementById('titleInput');
+            const descriptionInput = document.getElementById('descriptionInput');
+            const dueDateInput = document.getElementById('dueDateInput');
+
+            const newTodo = {
+                title: titleInput.value,
+                description: descriptionInput.value,
+                dueDate: dueDateInput.value,
+                userLoginId: userId
+            };
+
+            axios.post('https://localhost:7181/api/ToDo/add', newTodo)
+                .then(function (response) {
+                    console.log('New to-do added:', response.data);
+                    hideAddTodoForm();
+                    refreshToDoList(user);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            hideAddTodoForm();
+        });
+
+        // Call the initial functions
+        refreshToDoList(user);
+        refreshCalendarEvents();
+
     </script>
-}
 
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1 class="display-4">Today's Weather</h1>
-            @if (Model.City != null)
-            {
-                <p class="lead">@Model.City.Name, @Model.City.Country</p>
-            }
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Main Weather Information</h5>
-                    <p class="card-text">Temperature: @Model.List[0].Main.Temp &#8451;</p>
-                    <p class="card-text">Feels Like: @Model.List[0].Main.Feels_like &#8451;</p>
-                    <p class="card-text">Pressure: @Model.List[0].Main.Pressure hPa</p>
-                    <p class="card-text">Humidity: @Model.List[0].Main.Humidity %</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Additional Weather Information</h5>
-                    @foreach (var weather in Model.List[0].Weather)
-                    {
-                        <p class="card-text">Description: @weather.Description</p>
-                        <p class="card-text">Icon: <img src="http://openweathermap.org/img/wn/@(weather.Icon)" alt="Weather Icon" /></p>
-                    }
-                    <p class="card-text">Clouds: @Model.List[0].Clouds.All %</p>
-                    <p class="card-text">Wind Speed: @Model.List[0].Wind.Speed m/s</p>
-                    <p class="card-text">Wind Direction: @Model.List[0].Wind.Deg &deg;</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-5">
-        <div class="col">
-            <h2>To Do List</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Due Date</th>
-                        <th>Is Completed</th>
-                    </tr>
-                </thead>
-                <tbody id="todoListContainer">
-                    <!-- To Do items will be inserted here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="logout-container">
-    <form id="logoutForm" asp-action="Logout" asp-controller="Weather" method="post">
-        <button type="submit" class="btn btn-primary">Logout</button>
-    </form>
-</div>
-<style>
-    .logout-container {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
-
-    .logout-container button {
-        padding: 5px 10px;
-    }
-</style>
+</body>
+</html>

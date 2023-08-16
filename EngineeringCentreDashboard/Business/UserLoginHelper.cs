@@ -16,6 +16,7 @@ namespace EngineeringCentreDashboard.Business
         {
             _engineeringCentreDashboardDbContext = engineeringCentreDashboardDbContext;
         }
+
         public async Task<UserLoginRequest> GetOrCreateUser(string email)
         {
             var user = await _engineeringCentreDashboardDbContext.UserLogins.FirstOrDefaultAsync(u => u.Email == email);
