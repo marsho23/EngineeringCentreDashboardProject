@@ -13,6 +13,6 @@ namespace EngineeringCentreDashboard.Interfaces
         Task<ToDoRequest> Update(ToDoRequest toDo);
         Task Delete(long id);
         Task<ToDoRequest> CompleteTask(long id);
-
+        Task DeleteAllCompletedAsync(int userLoginId);
     }
 }

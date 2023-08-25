@@ -25,7 +25,7 @@ namespace EngineeringCentreDashboardWebApp.Controllers
         private readonly HttpClient _httpClient;
 
 
-        public WeatherController(IWeatherService weatherService, IUserLoginHelper userLoginHelper,IGoogleCalendarHelper googleCalendarHelper, HttpClient httpClient)
+        public WeatherController(IWeatherService weatherService, IUserLoginHelper userLoginHelper, IGoogleCalendarHelper googleCalendarHelper, HttpClient httpClient)
         {
             _weatherService = weatherService;
             this._userLoginHelper = userLoginHelper;
@@ -40,6 +40,8 @@ namespace EngineeringCentreDashboardWebApp.Controllers
 
             //var name = User.FindFirstValue(ClaimTypes.GivenName);
             var email = User.FindFirstValue(ClaimTypes.Name);
+            ViewData["email"] = email;
+
             string name;
             string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             bool isValidEmail = Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
@@ -62,7 +64,7 @@ namespace EngineeringCentreDashboardWebApp.Controllers
             }
             var weatherResponse = await _weatherService.GetForecastForToday("Manchester");
 
-            
+
 
             name = User.FindFirstValue(ClaimTypes.GivenName);
             ViewData["name"] = name;
@@ -111,7 +113,7 @@ namespace EngineeringCentreDashboardWebApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             string googleLogoutUrl = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://localhost:7187";
-           
+
             return Redirect(googleLogoutUrl);
 
         }

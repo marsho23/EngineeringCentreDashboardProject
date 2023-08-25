@@ -123,8 +123,17 @@ namespace EngineeringCentreDashboard.Business
         return toDo;
     }
 
+        public async Task DeleteAllCompletedAsync(int userLoginId)
+        {
+            var completedTasks = _engineeringDashboardDbContext.ToDoItems
+                .Where(todo => todo.UserLoginId == userLoginId && todo.IsCompleted);
 
-    public async Task<IEnumerable<ToDoRequest>> GetAll()
+            _engineeringDashboardDbContext.ToDoItems.RemoveRange(completedTasks);
+            await _engineeringDashboardDbContext.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<ToDoRequest>> GetAll()
         {
             List<ToDo> toDoItems = await _engineeringDashboardDbContext.ToDoItems.ToListAsync();
             return toDoItems.Select(toDo => new ToDoRequest(toDo));

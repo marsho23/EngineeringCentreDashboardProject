@@ -16,6 +16,7 @@
 
     <div class="container">
         <div class="row">
+
             <div class="col-sm">
                 <h2>Calendar Events</h2>
                 <div id="calendarEventsContainer"></div>
@@ -24,6 +25,7 @@
                 <h2>To Do List</h2>
                 <div id="todoListContainer"></div>
                 <button id="addTodoButton" class="btn btn-primary mb-2">Add</button>
+                <button id="deleteAllCompletedButton" class="btn btn-danger mb-2">Delete All Completed</button>
             </div>
             <div class="col-sm">
                 <h2>Today's Weather</h2>
@@ -31,31 +33,30 @@
                 {
                     <p class="lead">@Model.City.Name, @Model.City.Country</p>
                 }
-                    <div class="weather-card">
-                        <div class="card-body">
-                            @*<h5 class="card-title">Main Weather Information</h5>*@
-                            <p class="card-text">Temperature: @Model.List[0].Main.Temp &#8451;</p>
-                            <p class="card-text">Feels Like: @Model.List[0].Main.Feels_like &#8451;</p>
-                            <p class="card-text">Pressure: @Model.List[0].Main.Pressure hPa</p>
-                            <p class="card-text">Humidity: @Model.List[0].Main.Humidity %</p>
-                        </div>
+                <div class="weather-card">
+                    <div class="card-body">
+                        @*<h5 class="card-title">Main Weather Information</h5>*@
+                        <p class="card-text">Temperature: @Model.List[0].Main.Temp &#8451;</p>
+                        <p class="card-text">Feels Like: @Model.List[0].Main.Feels_like &#8451;</p>
+                        <p class="card-text">Pressure: @Model.List[0].Main.Pressure hPa</p>
+                        <p class="card-text">Humidity: @Model.List[0].Main.Humidity %</p>
                     </div>
-                    <div class="weather-card">
-                        <div class="card-body">
-                            <p></p>
-                            @*<h5 class="card-title">Additional Weather Information</h5>*@
-                            @foreach (var weather in Model.List[0].Weather)
-                            {
-                                <p class="card-text">Description: @weather.Description</p>
-                                <p class="card-text">Icon: <img src="https://openweathermap.org/img/wn/@(weather.Icon)" alt="Weather Icon" /></p>
-                            }
-                            <p class="card-text">Clouds: @Model.List[0].Clouds.All %</p>
+                </div>
+                <div class="weather-card">
+                    <div class="card-body">
+                        <p></p>
+                        @*<h5 class="card-title">Additional Weather Information</h5>*@
+                        @foreach (var weather in Model.List[0].Weather)
+                        {
+                            <p class="card-text">Description: @weather.Description</p>
+                            <p class="card-text">Icon: <img src="https://openweathermap.org/img/wn/@(weather.Icon)" alt="Weather Icon" /></p>
+                        }
+                        <p class="card-text">Clouds: @Model.List[0].Clouds.All %</p>
                         <p class="card-text">Wind Speed: @Model.List[0].Wind.Speed m/s</p>
                         <p class="card-text">Wind Direction: @Model.List[0].Wind.Deg &deg;</p>
                     </div>
                 </div>
-                
-              
+
             </div>
         </div>
     </div>
@@ -141,6 +142,7 @@
         var name = '@ViewData["name"]';
         var userId = '@ViewData["userId"]';
         console.log(userId);
+        console.log(user);
 
         function refreshToDoList(email) {
             axios.get('https://localhost:7181/api/ToDo/getByUserLoginId?email=' + email)
@@ -174,6 +176,7 @@
                     `;
                         container.appendChild(card);
                     });
+
                 })
         }
 
@@ -248,8 +251,25 @@
         function hideAddTodoForm() {
             document.getElementById('addTodoModal').style.display = 'none';
         }
+        function deleteAllCompletedTodos() {
+            if (!confirm('Are you sure you want to delete all completed tasks?')) {
+                return;
+            }
+
+            axios.delete(`https://localhost:7181/api/ToDo/deleteAllCompleted?userLoginId=${userId}`)
+                .then(function (response) {
+                    console.log('Deleted all completed tasks for user:', user);
+                    refreshToDoList(user);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
 
         document.getElementById('addTodoButton').addEventListener('click', showAddTodoForm);
+        document.getElementById('deleteAllCompletedButton').addEventListener('click', deleteAllCompletedTodos);
+
 
         document.getElementById('closeModalButton').addEventListener('click', hideAddTodoForm);
 

@@ -122,5 +122,13 @@ namespace EngineeringCentreDashboard.Controllers
             return Ok(id);
         }
 
+        [HttpDelete]
+        [Route("deleteAllCompleted")]
+        public async Task<IActionResult> DeleteAllCompleted(int userLoginId)
+        {
+            await _helper.DeleteAllCompletedAsync(userLoginId);
+            return Ok();
+        }
+
     }
 }
