@@ -13,6 +13,8 @@ using System.Web;
 using Google.Apis.Calendar.v3;
 using Newtonsoft.Json;
 using EngineeringCentreDashboardWebApp.Models;
+using System.Xml.Linq;
+using EngineeringCentreDashboard.Models;
 
 namespace EngineeringCentreDashboardWebApp.Controllers
 {
@@ -24,6 +26,57 @@ namespace EngineeringCentreDashboardWebApp.Controllers
         private readonly IGoogleCalendarHelper _googleCalendarHelper;
         private readonly HttpClient _httpClient;
 
+        private string GetUserEmail()
+        {
+
+            var email = User.FindFirstValue(ClaimTypes.Name);
+            ViewData["email"] = email;
+
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            bool isValidEmail = Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
+
+            if (isValidEmail)
+            {
+                if (!User.Identity.IsAuthenticated)
+                    email = User.FindFirstValue(ClaimTypes.Email);
+                return email;
+            }
+            return email;
+        }
+
+
+        private async Task<int> GetUserIdFromAPI(string email)
+        {
+            var webApiBaseUrl = "https://localhost:7181/api/";
+            HttpResponseMessage response = await _httpClient.GetAsync(webApiBaseUrl + "UserLogin/getByEmail/" + email);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                // Deserialize the content into a UserResponseModel object
+                var userResponse = JsonConvert.DeserializeObject<UserResponse>(content);
+                // Now you can access the ID from the deserialized object
+                return userResponse.Id;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+            }
+        }
+        private async void LoginUser(string email)
+        {
+            var userLogin = await _userLoginHelper.GetOrCreateUser(email);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userLogin.Id.ToString()),
+                new Claim(ClaimTypes.Name, email),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties { RedirectUri = "https://localhost:7187/Weather" };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+        }
 
         public WeatherController(IWeatherService weatherService, IUserLoginHelper userLoginHelper, IGoogleCalendarHelper googleCalendarHelper, HttpClient httpClient)
         {
@@ -38,71 +91,15 @@ namespace EngineeringCentreDashboardWebApp.Controllers
         public async Task<IActionResult> Index()
         {
 
-            //var name = User.FindFirstValue(ClaimTypes.GivenName);
-            var email = User.FindFirstValue(ClaimTypes.Name);
-            ViewData["email"] = email;
-
-            string name;
-            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            bool isValidEmail = Regex.IsMatch(email, emailPattern, RegexOptions.IgnoreCase);
-
-            if (isValidEmail)
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    name = User.FindFirstValue(ClaimTypes.GivenName);
-                    ViewData["email"] = email;
-                    //ViewData["name"] = name;
-                    //var weatherResponse = await _weatherService.GetForecastForToday("Manchester");
-                    //return View(weatherResponse);
-                }
-                else
-                {
-                    email = User.FindFirstValue(ClaimTypes.Email);
-                    ViewData["email"] = email;
-                }
-            }
             var weatherResponse = await _weatherService.GetForecastForToday("Manchester");
-
-
-
-            name = User.FindFirstValue(ClaimTypes.GivenName);
+            var name = User.FindFirstValue(ClaimTypes.GivenName);
+            var email = GetUserEmail();
             ViewData["name"] = name;
-
-
+            ViewData["email"] = email;
+            ViewData["userId"] = GetUserIdFromAPI(email);
             var userLogin = await _userLoginHelper.GetOrCreateUser(email);
-            //ViewData["id"]=userLogin.Id;
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userLogin.Id.ToString()),
-                new Claim(ClaimTypes.Name, email),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties { RedirectUri = "https://localhost:7187/Weather" };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-
-            string webApiBaseUrl = "https://localhost:7181/api/";
-
-            HttpResponseMessage response = await _httpClient.GetAsync(webApiBaseUrl + "UserLogin/getByEmail/" + email);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                // Deserialize the content into a UserResponseModel object
-                var userResponse = JsonConvert.DeserializeObject<UserResponse>(content);
-                // Now you can access the ID from the deserialized object
-                int userId = userResponse.Id;
-                ViewData["userId"] = userId;
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-            }
-
-
+            LoginUser(email);
+   
             return View(weatherResponse);
         }
 
